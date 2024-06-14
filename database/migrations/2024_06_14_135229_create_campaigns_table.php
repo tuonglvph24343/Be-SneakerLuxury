@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('campaigns', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('slug')->unique();
+            $table->timestamp('start_date');
+            $table->timestamp('end_date');
             $table->timestamps();
+
         });
     }
 

@@ -13,7 +13,13 @@ return new class extends Migration
     {
         Schema::create('sliders', function (Blueprint $table) {
             $table->id();
+            $table->string('link_to');
+            $table->timestamp('start_time');
+            $table->timestamp('end_time');
+            $table->string('url');
+            $table->string('status')->default('active');
             $table->timestamps();
+
         });
     }
 

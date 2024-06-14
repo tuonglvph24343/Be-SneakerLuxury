@@ -13,7 +13,14 @@ return new class extends Migration
     {
         Schema::create('coupons', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('campaign_id');
+            $table->string('code')->unique();
+            $table->string('discount_type');
+            $table->decimal('discount_value', 10, 2);
             $table->timestamps();
+
+            $table->foreign('campaign_id')->references('id')->on('campaigns');
+
         });
     }
 
