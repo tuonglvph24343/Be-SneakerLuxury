@@ -13,7 +13,13 @@ return new class extends Migration
     {
         Schema::create('order_coupon', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('order_id');
+            $table->unsignedBigInteger('coupon_id');
             $table->timestamps();
+
+            $table->foreign('order_id')->references('id')->on('orders');
+            $table->foreign('coupon_id')->references('id')->on('coupons');
+
         });
     }
 
