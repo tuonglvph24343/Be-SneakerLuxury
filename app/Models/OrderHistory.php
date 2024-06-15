@@ -5,15 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class OrderHistory extends Model
 {
     use HasFactory;
+    protected $fillable = ['order_id', 'description'];
 
-    protected $fillable = ['name', 'slug', 'icon'];
-
-    public function products()
+    public function order()
     {
-        return $this->hasMany(Product::class);
+        return $this->belongsTo(Order::class);
     }
 
 }

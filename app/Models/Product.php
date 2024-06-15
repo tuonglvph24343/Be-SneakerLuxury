@@ -14,30 +14,33 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'amount',
-        'price',
-        'thumbail',
-        'brand_id',
-        'category_id',
+        'brand_id', 'category_id', 'name', 'slug', 'price', 'description', 'status'
     ];
 
-    public function brand(): BelongsTo
+
+    public function brand()
     {
         return $this->belongsTo(Brand::class);
     }
-    public function category(): BelongsTo
+
+    public function category()
     {
         return $this->belongsTo(Category::class);
     }
 
-    public function images(): HasMany
+    public function variations()
     {
-        return $this->hasMany(ProductImages::class);
+        return $this->hasMany(Variation::class);
     }
 
-    public function sizes(): BelongsToMany
+    public function comments()
     {
-        return $this->belongsToMany(Size::class, 'product_sizes');
+        return $this->hasMany(Comment::class);
     }
+
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class);
+    }
+
 }
