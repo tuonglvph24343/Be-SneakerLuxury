@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('order_shipping_statuses', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('order_shipping_id');
+            $table->integer('order_shipping_id');
             $table->string('description');
             // $table->timestamp('created_at')->useCurrent();
             // $table->unsignedBigInteger('created_by');
             $table->timestamps();
-            $table->foreign('order_shipping_id')->references('id')->on('order_shippings')->onDelete('cascade');//end
+            // $table->foreign('order_shipping_id')->references('id')->on('order_shippings')->onDelete('cascade');//end
         });
     }
 

@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('variation_attribute_value', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('variation_id');
-            $table->unsignedBigInteger('attribute_value_id');
+            $table->integer('variation_id');
+            $table->integer('attribute_value_id');
             $table->timestamps();
 
-            $table->foreign('variation_id')->references('id')->on('variations');
-            $table->foreign('attribute_value_id')->references('id')->on('attribute_values');
+            // $table->foreign('variation_id')->references('id')->on('variations');
+            // $table->foreign('attribute_value_id')->references('id')->on('attribute_values');
 
         });
     }
