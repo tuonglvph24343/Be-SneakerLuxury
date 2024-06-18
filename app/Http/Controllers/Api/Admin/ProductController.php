@@ -9,86 +9,79 @@ use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
-    // Lấy danh sách tất cả sản phẩm
-    public function index()
-    {
-        $products = Product::all();
-        return response()->json($products);
-    }
+ // Display a listing of the products.
+ public function index()
+ {
+    $products = Product::with(['brand', 'category'])->get();
+    return response()->json($products);
+ }
 
-    // Lấy thông tin chi tiết của một sản phẩm
-    public function show($id)
-    {
-        $product = Product::find($id);
+ // Store a newly created product in storage.
+ public function store(Request $request)
+ {
+     $validator = Validator::make($request->all(), [
+         'brand_id' => 'required|integer',
+         'category_id' => 'required|integer',
+         'name' => 'required|string|max:255',
+         'slug' => 'required|string|max:255|unique:products',
+         'price' => 'required|numeric',
+         'description' => 'nullable|string',
+         'status' => 'required|string|in:active,inactive',
+     ]);
 
-        if (is_null($product)) {
-            return response()->json(['message' => 'Product not found'], 404);
-        }
+     if ($validator->fails()) {
+         return response()->json(['errors' => $validator->errors()], 422);
+     }
 
-        return response()->json($product);
-    }
+     $product = Product::create($request->all());
+     return response()->json($product, 201);
+ }
 
-    // Tạo một sản phẩm mới
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'brand_id' => 'required|exists:brands,id',
-            'category_id' => 'required|exists:categories,id',
-            'name' => 'required|string|max:255',
-            'slug' => 'required|string|unique:products,slug',
-            'price' => 'required|numeric',
-            'description' => 'nullable|string',
-            'status' => 'required|string|in:active,inactive',
-        ]);
+ // Display the specified product.
+ public function show($id)
+ {
+     $product = Product::with(['brand', 'category'])->find($id);
+     if (!$product) {
+         return response()->json(['message' => 'Product not found'], 404);
+     }
+     return response()->json($product);
+ }
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
+ // Update the specified product in storage.
+ public function update(Request $request, $id)
+ {
+     $validator = Validator::make($request->all(), [
+         'brand_id' => 'integer',
+         'category_id' => 'integer',
+         'name' => 'string|max:255',
+         'slug' => 'string|max:255|unique:products,slug,' . $id,
+         'price' => 'numeric',
+         'description' => 'nullable|string',
+         'status' => 'string|in:active,inactive',
+     ]);
 
-        $product = Product::create($request->all());
+     if ($validator->fails()) {
+         return response()->json(['errors' => $validator->errors()], 422);
+     }
 
-        return response()->json($product, 201);
-    }
+     $product = Product::find($id);
+     if (!$product) {
+         return response()->json(['message' => 'Product not found'], 404);
+     }
 
-    // Cập nhật thông tin của một sản phẩm
-    public function update(Request $request, $id)
-    {
-        $product = Product::find($id);
+     $product->update($request->all());
+     return response()->json($product);
+ }
 
-        if (is_null($product)) {
-            return response()->json(['message' => 'Product not found'], 404);
-        }
+ // Remove the specified product from storage.
+ public function destroy($id)
+ {
+     $product = Product::find($id);
+     if (!$product) {
+         return response()->json(['message' => 'Product not found'], 404);
+     }
 
-        $validator = Validator::make($request->all(), [
-            'brand_id' => 'sometimes|required|exists:brands,id',
-            'category_id' => 'sometimes|required|exists:categories,id',
-            'name' => 'sometimes|required|string|max:255',
-            'slug' => 'sometimes|required|string|unique:products,slug,' . $product->id,
-            'price' => 'sometimes|required|numeric',
-            'description' => 'nullable|string',
-            'status' => 'sometimes|required|string|in:active,inactive',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $product->update($request->all());
-
-        return response()->json($product);
-    }
-
-    // Xóa một sản phẩm
-    public function destroy($id)
-    {
-        $product = Product::find($id);
-
-        if (is_null($product)) {
-            return response()->json(['message' => 'Product not found'], 404);
-        }
-
-        $product->delete();
-
-        return response()->json(['message' => 'Product deleted successfully']);
-    }
+     $product->delete();
+     return response()->json(['message' => 'Product deleted successfully']);
+ }
 }
