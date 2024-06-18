@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('order_details', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('order_id');
-            $table->unsignedBigInteger('product_id');
+            $table->integer('order_id');
+            $table->integer('product_id');
             $table->string('variation_name')->nullable();
             $table->decimal('unit_price', 10, 2);
             $table->integer('quantity');
@@ -24,8 +24,8 @@ return new class extends Migration
             $table->decimal('net_total', 10, 2);
             $table->timestamps();
 
-            $table->foreign('order_id')->references('id')->on('orders');
-            $table->foreign('product_id')->references('id')->on('products');
+            // $table->foreign('order_id')->references('id')->on('orders');
+            // $table->foreign('product_id')->references('id')->on('products');
 
         });
     }
