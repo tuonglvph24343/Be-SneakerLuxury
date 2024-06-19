@@ -13,7 +13,7 @@ class UserCollection extends ResourceCollection
         $baseData = ['data' => UserResource::collection($paginator)];
 
         if (data_get($request, 'all')) return $baseData;
-        return [
+        return [ 
             ...$baseData,
             'per_page' => $paginator->perPage(),
             'total_page' => $paginator->lastPage(),
