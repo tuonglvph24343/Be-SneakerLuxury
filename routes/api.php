@@ -1,8 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\BrandController;
+use App\Http\Controllers\Api\Admin\CategoryController;
 use App\Http\Controllers\Api\Admin\ProductController as AdminProductController;
-use App\Http\Controllers\API\CategoryController;
-use App\Http\Controllers\API\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,3 +27,17 @@ Route::apiResource('products', AdminProductController::class);
 // Route::post('/products/store',[ProductController::class,'store']);
 // Route::post('/products/update/{id}',[ProductController::class,'store']);
 // Route::delete('/products/delete',[ProductController::class,'destroy']);
+
+//BRAND
+Route::get('/brands', [BrandController::class, 'index']);
+Route::get('/brands/{id}', [BrandController::class, 'show']);
+Route::post('/brands', [BrandController::class, 'store']);
+Route::put('/brands/{id}', [BrandController::class, 'update']);
+Route::delete('/brands/{id}', [BrandController::class, 'destroy']);
+
+//category
+Route::get('/categories', [CategoryController::class, 'index']);
+Route::get('/categories/{id}', [CategoryController::class, 'show']);
+Route::post('/categories', [CategoryController::class, 'store']);
+Route::put('/categories/{id}', [CategoryController::class, 'update']);
+Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
